@@ -10,6 +10,8 @@ jobs:
         steps:
             - name: Checkout repository # 저장소를 체크아웃하고, Python을 설정하고, 필요한 requests 라이브러리를 설치합니다.
               uses: actions/checkout@v2
+              with:
+                persist-credentials: false # 해당 줄을 추가
 
             - name: Set up Python
               uses: actions/setup-python@v2
@@ -30,6 +32,8 @@ jobs:
                   git config --global user.email 'koorukuroo@example.com'
                   git add naver.txt
                   git commit -m "Add naver.txt" 
-                  git push
-
-# 생성된 naver.txt 파일을 저장소에 커밋하고 푸시합니다
+            - name: Push
+              uses: ad-m/github-push-action@master
+              with:
+                  branch: "main"
+                  github_token: ${{ secrets.GH_TOKEN }} # 여기서 GH_TOKEN은 GitHub Secrets에 저장된 PAT입니다.
