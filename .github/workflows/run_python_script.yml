@@ -1,0 +1,35 @@
+name: Run Python Script and Commit File
+
+on:
+    workflow_dispatch: # 이벤트를 사용하여 워크플로우를 수동으로 트리거할 수 있게 설정합니다.
+
+jobs:
+    build:
+        runs-on: ubuntu-latest # 가장 최신 버전의 Ubuntu 가상 환경에서 작업을 실행합니다.
+
+        steps:
+            - name: Checkout repository # 저장소를 체크아웃하고, Python을 설정하고, 필요한 requests 라이브러리를 설치합니다.
+              uses: actions/checkout@v2
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.x"
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install requests
+
+            - name: Run script
+              run: python crawl_naver.py # •crawl_naver.py 스크립트를 실행합니다.
+
+            - name: Commit file
+              run: |
+                  git config --global user.name 'koorukuroo'
+                  git config --global user.email 'koorukuroo@example.com'
+                  git add naver.txt
+                  git commit -m "Add naver.txt" 
+                  git push
+
+# 생성된 naver.txt 파일을 저장소에 커밋하고 푸시합니다
